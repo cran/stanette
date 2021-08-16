@@ -1,0 +1,27 @@
+CXX_STD = CXX14
+CXX14STD = -std=c++1y
+PKG_CPPFLAGS = -Id -I"../inst/include" -I"../inst/include" -I"../inst/include/boost_not_in_BH" -I"." -DBOOST_DISABLE_ASSERTS -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION -DBOOST_NO_AUTO_PTR -DSTAN_THREADS
+PKG_CPPFLAGS += $(shell "${R_HOME}/bin/Rscript" -e "RcppParallel::CxxFlags()")
+PKG_CXXFLAGS += -DRCPP_PARALLEL_USE_TBB=1
+PKG_LIBS += $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "RcppParallel::RcppParallelLibs()")
+PKG_LIBS += -ldparse -Ld
+SHLIB_LDFLAGS = $(SHLIB_CXXLDFLAGS) 
+SHLIB_LD = $(SHLIB_CXXLD)
+
+SOURCES_STATIC = stan_fit.cpp stan_fit_base.cpp
+OBJECTS_STATIC = $(SOURCES_STATIC:.cpp=.o)
+
+SOURCES = $(filter-out stan_fit.cpp, jj.c jj.g.d_parser.c $(wildcard *.cpp) stan/lang/ast_def.cpp $(wildcard stan/lang/grammars/*.cpp))
+OBJECTS = $(addsuffix .o,$(basename $(SOURCES)))
+
+all: libdparse $(SHLIB) $(OBJECTS_STATIC)
+	@mkdir -p ../inst/lib/$(R_ARCH)
+	$(AR) -rs ../inst/lib/$(R_ARCH)/libStanServices.a $(OBJECTS_STATIC)
+	(cp ../inst/include/stan/math_ww.hpp ../inst/include/stan/math.hpp)
+
+libdparse:
+	echo "make libdparse.a ..."
+	(cd d; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) -fPIC" libdparse.a)
+
+.phony: all
+
