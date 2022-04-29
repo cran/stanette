@@ -17,7 +17,7 @@ static char *arg_types_desc[] = {
   (char *)"        "
 };
 
-void 
+void
 process_arg(ArgumentState *arg_state, int i, char ***argv) {
   char * arg = NULL;
   ArgumentDescription *desc = arg_state->desc;
@@ -27,7 +27,7 @@ process_arg(ArgumentState *arg_state, int i, char ***argv) {
       *(int *)desc[i].location = type=='F'?1:0;
     else if (type=='T')
       *(int *)desc[i].location = !*(int *)desc[i].location;
-    else if (type == '+') 
+    else if (type == '+')
       (*(int *)desc[i].location)++;
     else {
       arg = *++(**argv) ? **argv : *++(*argv);
@@ -45,7 +45,7 @@ process_arg(ArgumentState *arg_state, int i, char ***argv) {
         case 'S': strncpy((char *)desc[i].location,arg, atoi(desc[i].type+1));
           break;
         default:
-          fprintf(stderr, "%s:bad argument description\n", 
+          fprintf(stderr, "%s:bad argument description\n",
                  arg_state->program_name);
           exit(1);
           break;
@@ -65,20 +65,20 @@ process_args(ArgumentState *arg_state, char **argv) {
   /* Grab Environment Variables */
   for (i = 0;; i++) {
     if (!desc[i].name)
-      break; 
+      break;
     if (desc[i].env) {
       char type = desc[i].type[0];
       char * env = getenv(desc[i].env);
       if (!env) continue;
       switch (type) {
 	case 'A':
-	case 'f': 
-	case 'F': 
+	case 'f':
+	case 'F':
 	  break;
 	case 'I': *(int *)desc[i].location = strtol(env, NULL, 0); break;
 	case 'D': *(double *)desc[i].location = strtod(env, NULL); break;
 	case 'L': *(int64 *)desc[i].location = strtoll(env, NULL, 0); break;
-	case 'S': strncpy((char *)desc[i].location,env, 
+	case 'S': strncpy((char *)desc[i].location,env,
 			  strtol(desc[i].type+1, NULL, 0));
 	  break;
       }
@@ -125,7 +125,7 @@ process_args(ArgumentState *arg_state, char **argv) {
       }
     } else {
       arg_state->file_argument = (char **)REALLOC(
-        arg_state->file_argument, 
+        arg_state->file_argument,
         sizeof(char**) * (arg_state->nfile_arguments + 2));
       arg_state->file_argument[arg_state->nfile_arguments++] = *argv;
       arg_state->file_argument[arg_state->nfile_arguments] = NULL;
@@ -133,7 +133,7 @@ process_args(ArgumentState *arg_state, char **argv) {
   }
 }
 
-void 
+void
 usage(ArgumentState *arg_state, char *arg_unused) {
   ArgumentDescription *desc = arg_state->desc;
   int i;
@@ -145,8 +145,8 @@ usage(ArgumentState *arg_state, char *arg_unused) {
       break;
     if (!desc[i].description)
       continue;
-    fprintf(stderr,"  %c%c%c --%s%s%s", 
-	    desc[i].key != ' ' ? '-' : ' ', desc[i].key, 
+    fprintf(stderr,"  %c%c%c --%s%s%s",
+	    desc[i].key != ' ' ? '-' : ' ', desc[i].key,
 	    desc[i].key != ' ' ? ',' : ' ', desc[i].name,
             (strlen(desc[i].name) + 61 < 81) ?
              &SPACES[strlen(desc[i].name)+61] : "",
@@ -162,11 +162,7 @@ usage(ArgumentState *arg_state, char *arg_unused) {
 #ifdef FreeBSD
                 " %-9qd",
 #else
-#ifdef __MINGW32__
-                " %-9I64d",
-#else
                 " %-9lld",
-#endif
 #endif
 #endif
                 *(int64*)desc[i].location);
@@ -185,7 +181,7 @@ usage(ArgumentState *arg_state, char *arg_unused) {
       case 'D':
         fprintf(stderr, " %-9.3e", *(double*)desc[i].location);
         break;
-      case '+': 
+      case '+':
       case 'I':
         fprintf(stderr, " %-9d", *(int *)desc[i].location);
         break;

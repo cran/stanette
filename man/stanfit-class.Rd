@@ -211,12 +211,6 @@ fit2 <- stan(fit = fit)
 print(fit2)
 plot(fit2)
 traceplot(fit2)
-ainfo <- get_adaptation_info(fit2)
-cat(ainfo[[1]])
-seed <- get_seed(fit2)
-sp <- get_sampler_params(fit2)
-sp2 <- get_sampler_params(fit2, inc_warmup = FALSE)
-head(sp[[1]])
 
 lp <- log_prob(fit, c(1, 2))
 grad <- grad_log_prob(fit, c(1, 2))
@@ -268,7 +262,7 @@ excode <- '
 #               sample_file = "rstan_doc_ex.csv")
 # 
 
-exfit <- read_stan_csv(dir(system.file('misc', package = 'stanette'),
+exfit <- read_stan_csv(dir(system.file('misc', package = 'rstan'),
                        pattern='rstan_doc_ex_[[:digit:]].csv',
                        full.names = TRUE))
 
@@ -277,11 +271,9 @@ print(exfit)
 plot(exfit)
 }
 
-adaptinfo <- get_adaptation_info(exfit)
 inits <- get_inits(exfit) # empty
 inits <- get_inits(exfit, iter = 101)
 seed <- get_seed(exfit)
-sp <- get_sampler_params(exfit)
 ml <- As.mcmc.list(exfit)
 cat(get_stancode(exfit))
 }

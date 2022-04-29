@@ -94,24 +94,6 @@ the input data if necessary) gradually before going to more significant modifica
 m1 <- PMXStanModel(path = tempfile("pk_m1"), compile = TRUE)
 print(m1)
 
-### A population PKPD model
-ode <- "
-  C2 = centr/V;
-  d/dt(depot) =-ka*depot;
-  d/dt(centr) = ka*depot - ke*centr;
-  d/dt(eff) = (1+Emax*C2/(C2+EC50))*Kin - Kout*eff;
-"
-instant.stan.extension(ode)
-
-m5 <- PMXStanModel(type = "PKPD", 
-                   path = tempfile("pkpd_m1"),
-                   ode = ode, 
-                   theta= c("Emax","EC50"),
-                   eta = c("Emax","EC50"),
-                   fixed = c(V=1, ka=0.5, ke=0.4, Kin=0.5, Kout=0.5),
-                   obs.state = 3
-                  )
-compile(m5)
 }
 }
 \author{

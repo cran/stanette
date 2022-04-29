@@ -151,43 +151,6 @@ ode <- "
 "
 instant.stan.extension(ode)
 
-m2 <- PMXStanModel(type = "PKPD", 
-                   path = "pkpd_m2",
-                   ode = ode, 
-                   theta= c("Emax","EC50"),
-                   eta = c("Emax","EC50"),
-                   const = c(V=1, ka=0.5, ke=0.4, Kin=0.5, Kout=0.5),
-                   obs.state = 3
-                  )
-compile(m2)
-
-dat2 <- prepareInputData(data.source = d2_nm_poppkpd, 
-                         model = m2,
-                         inits = "BSL",
-                         covar = c("BMK1","BMK2")
-                        )
-
-fit2 <- PMXStanFit(m2, dat2, iter = 100, chains = 2)
-print(fit2, on.screen = F)
-
-save(m2, dat2, fit2, file = file.path("pkpd_m2", "ModelFit.RData"))
-
-traces(fit2)
-waic(fit2)
-gofplot(fit2)
-
-obs.vs.pred(fit2, by.cov = "BMK1", type = "continuous", 
-            cutoff = 1, filename = "obs_pred_BMK1.pdf"
-           )
-obs.vs.pred(fit2, by.cov = "BMK2", type = "categorical", 
-            filename = "obs_pred_BMK2.pdf"
-           )
-rsd.vs.pred(fit2, by.cov = "BMK1", type = "continuous", 
-            cutoff = 1, filename = "rsd_pred_BMK1.pdf"
-           )
-rsd.vs.pred(fit2, by.cov = "BMK2", type = "categorical", 
-            filename = "rsd_pred_BMK2.pdf"
-           )
 }
 }
 \author{

@@ -19,9 +19,6 @@
   \item{Autocorrelation}{\code{\link[rstan]{stan_plot}}}
 }
 }
-
-\value{No return value, called for side effects}
-
 \seealso{
 \code{\link[=rstan_gg_options]{Plot options}}
 }

@@ -87,14 +87,14 @@
   logarithmic axes for all non-negative parameters, except \code{lp__} and
   any integer valued quantities.
 }
+
+\value{No return value, called for side effects}
   
 \seealso{
   S4 class \code{\linkS4class{stanfit}} and its method \code{\link{extract}} as
   well as the \code{\link{pairs}} generic function. Also, see
   \code{\link{get_sampler_params}} and \code{\link{get_logposterior}}.
 } 
-
-\value{No return value, called for side effects}
 
 \examples{
 example(read_stan_csv)

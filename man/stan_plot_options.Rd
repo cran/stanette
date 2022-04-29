@@ -17,10 +17,10 @@
 \description{
   Set default appearance options
 }
-\value{No return value, called for side effects}
 \seealso{
 \code{\link[=rstan-plotting-functions]{List of RStan plotting functions}}
 }
+\value{No return value, called for side effects}
 \examples{
 rstan_ggtheme_options(panel.background = ggplot2::element_rect(fill = "gray"),
                       legend.position = "top")

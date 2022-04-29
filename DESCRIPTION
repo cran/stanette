@@ -1,10 +1,11 @@
 Package: stanette
 Encoding: UTF-8
 Type: Package
-Title: R Interface to 'Stan'
-Version: 2.21.2
-Date: 2021-08-12
+Title: R Interface to Stan
+Version: 2.21.3
+Date: 2022-04-23
 Authors@R: c(person("Yuan", "Xiong", role = "aut", email = "yuan.xiong@gmail.com"),
+             person("Huijuan", "Xu", role = "aut", email = "huijuanxu.xu@gmail.com"),
              person("Wenping", "Wang", email = "wwang8198@gmail.com", role = c("cre", "aut", "cph")),
              person("rstan", "developers", role = "aut"),
              person("Trustees of", "Columbia University", role = "cph"),
@@ -21,7 +22,7 @@ License: GPL (>= 3)
 NeedsCompilation: yes
 Imports: methods, stats4, inline, gridExtra (>= 2.0.0), Rcpp (>=
         0.12.0), RcppParallel (>= 5.0.1), loo (>= 2.3.0), pkgbuild,
-        withr, V8, brew, coda
+        brew, coda, V8
 Depends: R (>= 3.4.0), StanHeaders (>= 2.21.0), ggplot2 (>= 3.0.0),
         lattice
 LinkingTo: Rcpp (>= 0.12.0), RcppEigen (>= 0.3.3.3.0), BH (>=
@@ -32,14 +33,15 @@ Suggests: RUnit, RcppEigen (>= 0.3.3.3.0), BH (>= 1.72.0-2), parallel,
 URL: https://mc-stan.org/rstan/, https://discourse.mc-stan.org
 BugReports: https://github.com/stan-dev/rstan/issues/
 SystemRequirements: GNU make, pandoc
-RoxygenNote: 5.0.1
-Packaged: 2021-08-13 12:28:21 UTC; annie
+RoxygenNote: 7.1.2
 Maintainer: Wenping Wang <wwang8198@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-08-16 08:30:02 UTC
+Date/Publication: 2022-04-29 07:50:02 UTC
 Author: Yuan Xiong [aut],
+  Huijuan Xu [aut],
   Wenping Wang [cre, aut, cph],
   rstan developers [aut],
   Trustees of Columbia University [cph],
   John Plevyak [ctb, cph] (dparser author),
   Linda Petzold [ctb] (LSODA author)
+Packaged: 2022-04-27 17:18:46 UTC; annie

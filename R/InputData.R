@@ -224,7 +224,7 @@ if(!hasArg(inits)) {
       stop("Number of eligible subjects (printed above) does not match length of user-specified initial observations.")
     }
   } else { 
-    if (class(inits)=="character") {
+    if (is(inits)[1]=="character") {
       if(!any(datcols == inits)) {
         stop("User-specified column for initial observations cannot be found in data file.")
       } else {
@@ -363,7 +363,7 @@ switch(m.pk.solver,
            # evid
            evid <- d3$EVID
            # inits
-           states <- scan("STATE_VARS.txt", character(0), quiet=T)
+           states <- scan(sprintf("%s/STATE_VARS.txt",tempdir()), character(0), quiet=T)
            n.state.var <- length(states)
            ## set to all 0's for PK model
            inits <- rep(0, n.state.var*nsub)

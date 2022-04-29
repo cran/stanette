@@ -71,7 +71,7 @@ model{
 generated quantities{
     vector[sum(NOBS)] log_lik;
     for(n in 1:sum(NOBS)){
-        log_lik[n] = normal_log(conc[n], y_pred[n], sigma);
+        log_lik[n] = normal_lpdf(conc[n] | y_pred[n], sigma);
     }
 }"
 
@@ -129,7 +129,7 @@ transformed parameters{
 	                     1E-4,
 	                     1E-4,
 	                     NOBS[i],
-                     1 + <%= ncmpts.aux %>);  # index of state variable to fit
+                     1 + <%= ncmpts.aux %>);  // index of state variable to fit
 
             for(j in 1:NOBS[i])
                 y_pred[y_index + j - 1] = g[j]/V[i];
@@ -154,7 +154,7 @@ model{
 generated quantities{
     vector[sum(NOBS)] log_lik;
     for(n in 1:sum(NOBS)){
-        log_lik[n] = normal_log(conc[n], y_pred[n], sigma);
+        log_lik[n] = normal_lpdf(conc[n] | y_pred[n], sigma);
     }
 }"
 
@@ -336,7 +336,7 @@ theta_def_lst <- lapply(1:npars, function(ix)
 theta_def_str <- do.call("paste", theta_def_lst)
 
 eta_calc_lst <- lapply(1:npars, function(ix)
-                   sprintf("   sigma_eta[%d] <- sqrt(sigma2_eta[%d]);\n", ix, ix)
+                   sprintf("   sigma_eta[%d] = sqrt(sigma2_eta[%d]);\n", ix, ix)
                )
 eta_calc_str <- do.call("paste", eta_calc_lst)
 
@@ -461,7 +461,7 @@ transformed parameters{
                 1E-4,
                 1E-4,
                 NOBS[i],
-                <%= m.obs.state %>);  # index of state variable to fit
+                <%= m.obs.state %>);  // index of state variable to fit
             for(j in 1:NOBS[i])
                 y_pred[y_index + j - 1] = g[j];
             y_index = y_index + NOBS[i];
@@ -483,7 +483,7 @@ model{
 generated quantities{
     vector[sum(NOBS)] log_lik;
     for(n in 1:sum(NOBS)){
-        log_lik[n] = normal_log(y[n], y_pred[n], sigma);
+        log_lik[n] = normal_lpdf(y[n] | y_pred[n], sigma);
     }
 }"
 
@@ -512,7 +512,7 @@ if (!file.exists(m.path)) {
 }
 
 ### get input
-pars <- scan("ODE_PARS.txt", character(0), quiet = T)
+pars <- scan(sprintf("%s/ODE_PARS.txt",tempdir()), character(0), quiet = T)
 # total number of parameters in the ODE
 npars <- length(pars)
 
@@ -535,7 +535,7 @@ count.eta <- cumsum(flag.eta)
 
 ### dynamic strings in STAN code
 # number of state variables
-states <- scan("STATE_VARS.txt", character(0), quiet = T)
+states <- scan(sprintf("%s/STATE_VARS.txt",tempdir()), character(0), quiet = T)
 nstates <- length(states)
 
 # amt_rate_decl_str and dosing_input_str
@@ -560,11 +560,11 @@ pars_decl_str <- do.call("paste", pars_decl_lst)
 # pars_calc_str
 pars_calc_lst <- lapply(1:ntheta, function(ix) {
                     if (flag.eta[ix]) {
-                      if (ix==1) sprintf("%s[n] <- exp( theta[%d] + sigma_eta[%d] * eta[n,%d] ); ", names(idx.theta)[ix], ix, count.eta[ix], count.eta[ix]) 
-                      else sprintf("\n        %s[n] <- exp( theta[%d] + sigma_eta[%d] * eta[n,%d] ); ", names(idx.theta)[ix], ix, count.eta[ix], count.eta[ix]) 
+                      if (ix==1) sprintf("%s[n] = exp( theta[%d] + sigma_eta[%d] * eta[n,%d] ); ", names(idx.theta)[ix], ix, count.eta[ix], count.eta[ix]) 
+                      else sprintf("\n        %s[n] = exp( theta[%d] + sigma_eta[%d] * eta[n,%d] ); ", names(idx.theta)[ix], ix, count.eta[ix], count.eta[ix]) 
                     } else {
-                      if (ix==1) sprintf("%s[n] <- exp( theta[%d] );", names(idx.theta)[ix], ix)
-                      else sprintf("\n        %s[n] <- exp( theta[%d] ); ", names(idx.theta)[ix], ix)
+                      if (ix==1) sprintf("%s[n] = exp( theta[%d] );", names(idx.theta)[ix], ix)
+                      else sprintf("\n        %s[n] = exp( theta[%d] ); ", names(idx.theta)[ix], ix)
                     }
                 })
 pars_calc_str <- do.call("paste", pars_calc_lst)
@@ -572,11 +572,11 @@ pars_calc_str <- do.call("paste", pars_calc_lst)
 # pars_spec_str
 pars_spec_lst <- lapply(1:npars, function(ix) {
                     if (ix%in%idx.theta) {  # to be estimated
-                      if (ix==1) sprintf("params[%d] <- %s[i]; ", ix, pars[ix]) 
-                      else sprintf("\n            params[%d] <- %s[i]; ", ix, pars[ix]) 
+                      if (ix==1) sprintf("params[%d] = %s[i]; ", ix, pars[ix]) 
+                      else sprintf("\n            params[%d] = %s[i]; ", ix, pars[ix]) 
                     } else { # constant
-                      if (ix==1) sprintf("params[%d] <- %g; ", ix, m.const[const.par.name==pars[ix]])
-                      else sprintf("\n            params[%d] <- %g; ", ix, m.const[const.par.name==pars[ix]])
+                      if (ix==1) sprintf("params[%d] = %g; ", ix, m.const[const.par.name==pars[ix]])
+                      else sprintf("\n            params[%d] = %g; ", ix, m.const[const.par.name==pars[ix]])
                     }
                 })
 pars_spec_str <- do.call("paste", pars_spec_lst)

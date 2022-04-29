@@ -80,7 +80,7 @@ excode <- '
 # exfit <- stan(model_code = excode, save_dso = FALSE, iter = 200, 
 #               sample_file = "rstan_doc_ex.csv")
 # 
-exfit <- read_stan_csv(dir(system.file('misc', package = 'stanette'),
+exfit <- read_stan_csv(dir(system.file('misc', package = 'rstan'),
                        pattern='rstan_doc_ex_[[:digit:]].csv',
                        full.names = TRUE))
 
