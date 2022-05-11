@@ -2,8 +2,8 @@ Package: stanette
 Encoding: UTF-8
 Type: Package
 Title: R Interface to Stan
-Version: 2.21.3
-Date: 2022-04-23
+Version: 2.21.4
+Date: 2022-05-06
 Authors@R: c(person("Yuan", "Xiong", role = "aut", email = "yuan.xiong@gmail.com"),
              person("Huijuan", "Xu", role = "aut", email = "huijuanxu.xu@gmail.com"),
              person("Wenping", "Wang", email = "wwang8198@gmail.com", role = c("cre", "aut", "cph")),
@@ -36,7 +36,7 @@ SystemRequirements: GNU make, pandoc
 RoxygenNote: 7.1.2
 Maintainer: Wenping Wang <wwang8198@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-04-29 07:50:02 UTC
+Date/Publication: 2022-05-11 15:30:02 UTC
 Author: Yuan Xiong [aut],
   Huijuan Xu [aut],
   Wenping Wang [cre, aut, cph],
@@ -44,4 +44,4 @@ Author: Yuan Xiong [aut],
   Trustees of Columbia University [cph],
   John Plevyak [ctb, cph] (dparser author),
   Linda Petzold [ctb] (LSODA author)
-Packaged: 2022-04-27 17:18:46 UTC; annie
+Packaged: 2022-05-06 18:33:09 UTC; annie
